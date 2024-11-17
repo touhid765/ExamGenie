@@ -47,7 +47,7 @@ aside {
     background: #242424; /* Dark sidebar */
     padding: 20px;
     width: 250px; /* Fixed sidebar width */
-    height: 100%; /* Full height */
+    height: calc(100% - 80px); /* Full height */
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.5);
     position: absolute; /* Adjust position to avoid overlap with content */
     top: 60px; /* Offset for header height */
