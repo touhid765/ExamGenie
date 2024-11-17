@@ -10,11 +10,13 @@
     <!-- Header Section -->
     <header>
         <h1>ExamGenie</h1>
-        <select name="profile_type">
-            <option value="program">Select Program</option>
-            <option value="BCA">BCA</option>
-            <option value="MCA">MCA</option>
-            <option value="M.Tech">M.Tech</option>
+        <!-- Dropdown with onChange event to trigger action -->
+        <select name="profile_type" onchange="redirectToProgramPage(this.value)">
+            <option value="">Select Program</option>
+            <option value="BCA" <?php echo (isset($_GET['program']) && $_GET['program'] == 'BCA') ? 'selected' : ''; ?>>BCA</option>
+            <option value="MCA" <?php echo (isset($_GET['program']) && $_GET['program'] == 'MCA') ? 'selected' : ''; ?>>MCA</option>
+            <option value="M.Tech" <?php echo (isset($_GET['program']) && $_GET['program'] == 'M.Tech') ? 'selected' : ''; ?>>M.Tech</option>
+            <option value="B.Tech" <?php echo (isset($_GET['program']) && $_GET['program'] == 'B.Tech') ? 'selected' : ''; ?>>B.Tech</option>
         </select>
     </header>
 
@@ -22,11 +24,11 @@
     <aside>
         <nav>
             <ul>
-                <li><a href="?page=dashboard">Dashboard</a></li>
-                <li><a href="?page=course-management">Course Management</a></li>
-                <li><a href="?page=outcome-management">Outcome Management</a></li>
-                <li><a href="?page=question-management">Question Management</a></li>
-                <li><a href="?page=report-generation">Report Generation</a></li>
+                <li><a href="?page=dashboard&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Dashboard</a></li>
+                <li><a href="?page=course-management&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Course Management</a></li>
+                <li><a href="?page=outcome-management&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Outcome Management</a></li>
+                <li><a href="?page=question-management&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Question Management</a></li>
+                <li><a href="?page=report-generation&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Report Generation</a></li>
             </ul>
         </nav>
     </aside>
@@ -48,5 +50,28 @@
     <footer>
         <p>&copy; 2024 Question Setting Software</p>
     </footer>
+
+    <script>
+        // Function to redirect to a page with selected program
+        function redirectToProgramPage(selectedProgram) {
+            // If no program is selected, just return (do nothing)
+            if (!selectedProgram) return;
+            
+            // Get the current URL query parameters, including the 'page' and 'program'
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Check if 'page' is set in the query string and if it's in the allowed pages list
+            const currentPage = urlParams.get('page') || 'dashboard';
+            const allowedPages = ['dashboard', 'course-management', 'outcome-management', 'question-management', 'report-generation'];
+
+            // If the current page is allowed, proceed with redirect
+            if (allowedPages.includes(currentPage)) {
+                // Update the URL with the selected program
+                window.location.href = `?page=${currentPage}&program=${selectedProgram}`;
+            } else {
+                console.log("Invalid page");
+            }
+        }
+    </script>
 </body>
 </html>
