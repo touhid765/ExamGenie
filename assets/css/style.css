@@ -1,0 +1,113 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text for readability */
+}
+
+header {
+    background: #1f1f1f; /* Dark header */
+    color: #e0e0e0; /* Light text */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    z-index: 1000; /* Keep the header on top */
+    position: relative; /* Ensure header stays at the top */
+}
+
+header select {
+    padding: 5px;
+    background-color: #333; /* Dark select box */
+    color: #e0e0e0; /* Light text */
+    border: 1px solid #444; /* Subtle border */
+}
+
+main {
+    display: flex;
+    flex-grow: 1;
+    padding: 0;
+    height: calc(100vh - 60px); /* Adjust height considering header height */
+    overflow: hidden; /* Prevent body scrolling */
+}
+
+aside {
+    background: #242424; /* Dark sidebar */
+    padding: 20px;
+    width: 250px; /* Fixed sidebar width */
+    height: 100%; /* Full height */
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.5);
+    position: absolute; /* Adjust position to avoid overlap with content */
+    top: 60px; /* Offset for header height */
+    left: 0;
+    overflow-y: auto; /* Enable vertical scroll in sidebar */
+}
+
+aside ul {
+    list-style: none;
+    padding: 0;
+}
+
+aside ul li {
+    margin: 10px 0;
+}
+
+aside ul li a {
+    text-decoration: none;
+    color: #80c7ff; /* Light blue for links */
+    transition: color 0.3s;
+}
+
+aside ul li a:hover {
+    color: #ffffff; /* White on hover */
+}
+
+.content {
+    flex-grow: 1;
+    margin-left: 250px; /* Offset content for the sidebar */
+    padding: 20px;
+    background: #1f1f1f; /* Dark content background */
+    color: #e0e0e0; /* Light text */
+    overflow-y: auto; /* Enable vertical scroll if content overflows */
+    height: 100%; /* Ensure the content takes up full available height */
+}
+
+footer {
+    background: #333; /* Dark footer */
+    color: #e0e0e0; /* Light text */
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: auto; /* Push footer to the bottom */
+}
+
+footer a {
+    color: #80c7ff; /* Light blue footer link */
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #ffffff; /* White on hover */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    aside {
+        position: relative;
+        width: 100%;
+        height: auto;
+        top: 0; /* Remove top offset for smaller screens */
+    }
+
+    .content {
+        margin-left: 0; /* Remove sidebar offset for smaller screens */
+    }
+}
