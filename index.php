@@ -23,10 +23,10 @@
         <nav>
             <ul>
                 <li><a href="?page=dashboard">Dashboard</a></li>
-                <li><a href="?page=course-management">Task 1: Course Management</a></li>
-                <li><a href="?page=outcome-management">Task 2: Outcome Management</a></li>
-                <li><a href="?page=question-management">Task 3: Question Management</a></li>
-                <li><a href="?page=report-generation">Task 4: Report Generation</a></li>
+                <li><a href="?page=course-management">Course Management</a></li>
+                <li><a href="?page=outcome-management">Outcome Management</a></li>
+                <li><a href="?page=question-management">Question Management</a></li>
+                <li><a href="?page=report-generation">Report Generation</a></li>
             </ul>
         </nav>
     </aside>
