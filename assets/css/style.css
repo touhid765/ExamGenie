@@ -7,6 +7,11 @@ body {
     height: 100vh;
     background-color: #121212; /* Dark background */
     color: #e0e0e0; /* Light text for readability */
+    box-sizing: border-box; /* Include padding and border in width/height calculation */
+}
+
+*, *::before, *::after {
+    box-sizing: inherit; /* Ensure all elements follow box-sizing rule */
 }
 
 header {
@@ -35,6 +40,7 @@ main {
     padding: 0;
     height: calc(100vh - 60px); /* Adjust height considering header height */
     overflow: hidden; /* Prevent body scrolling */
+    width: 100%; /* Ensure main area fits screen */
 }
 
 aside {
@@ -47,6 +53,8 @@ aside {
     top: 60px; /* Offset for header height */
     left: 0;
     overflow-y: auto; /* Enable vertical scroll in sidebar */
+    max-width: 250px; /* Ensure sidebar does not overflow */
+    margin-top: 20px;
 }
 
 aside ul {
@@ -76,6 +84,8 @@ aside ul li a:hover {
     color: #e0e0e0; /* Light text */
     overflow-y: auto; /* Enable vertical scroll if content overflows */
     height: 100%; /* Ensure the content takes up full available height */
+    max-width: calc(100% - 250px); /* Ensure content doesn't overflow on the right */
+    padding-top: 20px;
 }
 
 footer {
@@ -105,9 +115,11 @@ footer a:hover {
         width: 100%;
         height: auto;
         top: 0; /* Remove top offset for smaller screens */
+        padding: 10px; /* Adjust padding for smaller screens */
     }
 
     .content {
         margin-left: 0; /* Remove sidebar offset for smaller screens */
+        max-width: 100%; /* Ensure content area doesn't overflow */
     }
 }
