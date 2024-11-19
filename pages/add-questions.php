@@ -88,6 +88,6 @@
             </div>
         </div>
     </div>
-    <script src="assets/js/question-management.js"></script>
+    <script src="assets/js/questions.js"></script>
 </body>
 </html>

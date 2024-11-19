@@ -64,6 +64,6 @@
         </form>
     </div>
 
-    <script src="assets/js/course-management.js"></script>
+    <script src="assets/js/courses.js"></script>
 </body>
 </html>

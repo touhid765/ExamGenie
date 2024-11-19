@@ -51,6 +51,6 @@
         </div>
 
     </div>
-    <script src="assets/js/outcome-management.js"></script>
+    <script src="assets/js/outcomes.js"></script>
 </body>
 </html>
