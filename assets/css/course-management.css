@@ -145,6 +145,21 @@ th, td {
     display: block;
 }
 
+/* Close button */
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    float: right;
+}
+
+.close:hover,
+.close:focus {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    cursor: pointer;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

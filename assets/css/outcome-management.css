@@ -126,7 +126,7 @@ button:focus {
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: rgb(255, 255, 255);
     text-decoration: none;
     cursor: pointer;
 }
@@ -157,24 +157,6 @@ button:focus {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7); /* Shadow effect */
 }
 
-/* Close button in top-right */
-#editOutcomeModal .modal-content .close {
-    color: #ccc; /* Light gray color for close button */
-    font-size: 30px;
-    font-weight: bold;
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    cursor: pointer;
-}
-
-/* Close button hover effect */
-#editOutcomeModal .modal-content .close:hover,
-#editOutcomeModal .modal-content .close:focus {
-    color: #fff; /* White on hover/focus */
-    text-decoration: none;
-    cursor: pointer;
-}
 
 /* Heading style inside modal */
 #editOutcomeModal h2 {

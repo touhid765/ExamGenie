@@ -46,6 +46,7 @@
 
     <!-- Edit Course Modal -->
     <div id="edit-modal" class="modal">
+        <span class="close" onclick="closeEditModal()">&times;</span>
         <h2>Edit Course</h2>
         <form id="edit-form">
             <label for="edit_course_name">Course Name:</label>
@@ -60,7 +61,6 @@
             <input type="hidden" id="edit_course_id" name="id">
             
             <button type="submit">Save Changes</button>
-            <button type="button" onclick="closeEditModal()">Cancel</button>
         </form>
     </div>
 
