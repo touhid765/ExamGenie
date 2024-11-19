@@ -25,10 +25,9 @@
         <nav>
             <ul>
                 <li><a href="?page=dashboard&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Dashboard</a></li>
-                <li><a href="?page=course-management&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Course Management</a></li>
-                <li><a href="?page=outcome-management&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Outcome Management</a></li>
-                <li><a href="?page=question-management&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Question Management</a></li>
-                <li><a href="?page=report-generation&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Report Generation</a></li>
+                <li><a href="?page=add-courses&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Add Courses</a></li>
+                <li><a href="?page=add-outcomes&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Add Outcomes</a></li>
+                <li><a href="?page=add-questions&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Add Questions</a></li>
             </ul>
         </nav>
     </aside>
@@ -37,7 +36,7 @@
     <main class="content">
         <?php
         $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
-        $allowed_pages = ['dashboard', 'course-management', 'outcome-management', 'question-management', 'report-generation'];
+        $allowed_pages = ['dashboard', 'add-courses', 'add-outcomes', 'add-questions'];
         if (in_array($page, $allowed_pages)) {
             include("pages/$page.php");
         } else {
@@ -62,7 +61,7 @@
             
             // Check if 'page' is set in the query string and if it's in the allowed pages list
             const currentPage = urlParams.get('page') || 'dashboard';
-            const allowedPages = ['dashboard', 'course-management', 'outcome-management', 'question-management', 'report-generation'];
+            const allowedPages = ['dashboard', 'add-courses', 'add-outcomes', 'add-questions'];
 
             // If the current page is allowed, proceed with redirect
             if (allowedPages.includes(currentPage)) {
