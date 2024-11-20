@@ -287,30 +287,53 @@ function fetchQuestionReport() {
 }
 
 
-function downloadAsPdf(){
-    // Get the content of the report
-    const reportContent = document.getElementById("report").innerHTML;
+function downloadAsPdf() {
+    const courseCode = document.getElementById("course").value;
+    const year = document.getElementById("year").value;
 
-    // Send the content to the server
-    fetch("controllers/generate_pdf.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ content: reportContent }),
-    })
-    .then((response) => response.blob())
-    .then((blob) => {
-        // Create a link to download the PDF
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "report.pdf";
-        link.click();
-    })
-    .catch((error) => {
-        console.error("Error generating PDF:", error);
-    });
+    if (!courseCode || !year) {
+        alert("Please select a course and year first.");
+        return;
+    }
+
+    fetch(`controllers/report.php?course_code=${courseCode}&year=${year}`, { method: "GET" })
+        .then((response) => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.json();
+        })
+        .then((data) => {
+            if (!data.data.reports || data.data.reports.length === 0) {
+                alert(`No report found for ${courseCode}, Year: ${year}`);
+                return;
+            }
+
+            const report = data.data.reports[0]; // Use the first report (or modify as needed)
+            
+            // Send the raw report object to the server for PDF generation
+            fetch("controllers/generate_pdf.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ report }),
+            })
+                .then((response) => response.blob())
+                .then((blob) => {
+                    // Create a link to download the PDF
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `${courseCode}_${year}.pdf`;
+                    link.click();
+                })
+                .catch((error) => {
+                    console.error("Error generating PDF:", error);
+                });
+        })
+        .catch((error) => {
+            alert("Error fetching report: " + error.message);
+        });
 }
+
 
 
 // Initialize Dashboard

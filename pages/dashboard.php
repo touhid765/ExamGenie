@@ -25,7 +25,6 @@
             <div>
                 <label for="year">Select Year:</label>
                 <select id="year" name="year">
-                    <option value="">Select Year</option>
                     <!-- Dynamic year options will be added here -->
                 </select>
             </div>

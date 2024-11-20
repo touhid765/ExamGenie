@@ -1,49 +1,60 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get the raw POST data
-    $postData = file_get_contents("php://input");
-    $data = json_decode($postData, true);
+// Include FPDF library
+include '../assets/lib/fpdf.php';
 
-    if (!isset($data['content']) || empty($data['content'])) {
-        http_response_code(400);
-        echo json_encode(["message" => "No content provided"]);
-        exit;
-    }
+// Handle incoming JSON data
+$requestBody = file_get_contents("php://input");
+$data = json_decode($requestBody, true);
 
-    // Capture the content
-    $content = $data['content'];
-
-    // Create the PDF using output buffering
-    ob_start();
-    echo '<html><body>';
-    echo $content;
-    echo '</body></html>';
-    $htmlContent = ob_get_clean();
-
-    // Convert HTML to PDF
-    $pdfFilePath = "php://output"; // Output directly to browser
-    header("Content-Type: application/pdf");
-    header("Content-Disposition: attachment; filename=report.pdf");
-
-    // Set up basic PDF headers
-    $pageWidth = 210; // A4 width in mm
-    $pageHeight = 297; // A4 height in mm
-    $margin = 10;
-
-    // Start PDF generation
-    $pdf = fopen($pdfFilePath, "wb");
-    fwrite($pdf, "%PDF-1.4\n");
-
-    // Page content
-    fwrite($pdf, "1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
-    fwrite($pdf, "2 0 obj\n<< /Type /Pages /Count 1 /Kids [3 0 R] >>\nendobj\n");
-    fwrite($pdf, "3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 $pageWidth $pageHeight]\n/Contents 4 0 R >>\nendobj\n");
-    fwrite($pdf, "4 0 obj\n<< /Length " . strlen($htmlContent) . " >>\nstream\n$htmlContent\nendstream\nendobj\n");
-
-    fwrite($pdf, "xref\n0 5\n0000000000 65535 f\n0000000010 00000 n\n0000000053 00000 n\n");
-    fwrite($pdf, "trailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n9\n%%EOF");
-
-    fclose($pdf);
+if (!isset($data['report'])) {
+    http_response_code(400);
+    echo "No report data received";
     exit;
 }
+
+$report = $data['report'];
+$courseCode = $report['course_code'];
+$year = $report['year'];
+
+// Sanitize the filename
+$filename = preg_replace('/[^A-Za-z0-9_\-]/', '', $courseCode . "_" . $year) . ".pdf";
+
+// Initialize FPDF object
+$pdf = new FPDF();
+$pdf->SetAutoPageBreak(true, 20); // Automatically break pages, 20mm bottom margin
+$pdf->AddPage();
+
+// Set title
+$pdf->SetFont('Arial', 'B', 26);
+$pdf->Cell(0, 10, "Aliah University", 0, 1, 'C');
+
+// Set course details
+$pdf->SetFont('Arial', 'B', 16);
+$pdf->Ln(10); // Line break
+$pdf->Cell(0, 10, "Course Code: {$courseCode}", 0, 1);
+$pdf->Cell(0, 10, "Year: {$year}", 0, 1);
+
+// Add a line break
+$pdf->Ln(10);
+
+// Add questions
+$pdf->SetFont('Arial', '', 12);
+
+$n = 1;
+foreach ($report['questions'] as $question) {
+    $questionText = "$n. " . $question['question_text'] . " [ Marks: {$question['marks']}, {$question['level']}, CO{$question['outcome_id']} ]";
+
+    // Check if content will overflow and add a new page if necessary
+    if ($pdf->GetY() + 10 > 280) { // If the Y position is near the bottom of the page
+        $pdf->AddPage(); // Start a new page
+    }
+
+    // Print question text
+    $pdf->MultiCell(0, 10, $questionText);
+
+    $n++;
+}
+
+// Output the PDF as a download
+$pdf->Output('D', $filename);
 ?>
