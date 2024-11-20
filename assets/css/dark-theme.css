@@ -1,13 +1,6 @@
 
 /* Dark Theme CSS */
 
-/* CSS Reset and Basic Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 /* Color Variables */
 :root {
     --bg-primary: #121212;
@@ -20,81 +13,6 @@
     --accent-danger: #f44336;
     --accent-warning: #ffc107;
     --accent-success: #4CAF50;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    line-height: 1.6;
-}
-
-/* Layout */
-.container {
-    width: 80%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Header */
-header {
-    background: var(--bg-secondary);
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-header select {
-    padding: 5px;
-    background-color: var(--bg-tertiary);
-    color: var(--text-primary);
-    border: 1px solid #444;
-}
-
-/* Main Content */
-main {
-    display: flex;
-    height: calc(100vh - 60px);
-    overflow: hidden;
-}
-
-/* Sidebar */
-aside {
-    background: var(--bg-tertiary);
-    padding: 20px;
-    width: 250px;
-    height: 100%;
-    overflow-y: auto;
-    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.5);
-}
-
-aside ul {
-    list-style: none;
-}
-
-aside ul li {
-    margin: 10px 0;
-}
-
-aside ul li a {
-    color: var(--accent-primary);
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-aside ul li a:hover {
-    color: var(--text-primary);
-}
-
-/* Content Area */
-.content {
-    flex-grow: 1;
-    padding: 20px;
-    background: var(--bg-secondary);
-    overflow-y: auto;
 }
 
 /* Typography */

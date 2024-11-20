@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Management</title>
-    <link rel="stylesheet" href="assets/css/course-management.css">
+    <link rel="stylesheet" href="assets/css/dark-theme.css">
 </head>
 <body>
     <div id="add-course">
