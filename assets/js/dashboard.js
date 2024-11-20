@@ -1,3 +1,9 @@
+// Helper function to get 'program' from URL parameters
+function getProgramFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('program');
+}  
+
 // Populate Year Dropdown
 function populateYearDropdown() {
     const yearDropdown = document.getElementById("year");
@@ -15,7 +21,14 @@ function populateYearDropdown() {
 
 // Fetch and Populate Courses
 function populateCourseDropdown() {
-    fetch('controllers/course.php', { method: 'GET' })
+    const program = getProgramFromURL();
+
+    if (!program) {
+        alert('Please select a program.');
+        return;
+    }
+
+    fetch(`controllers/course.php?program=${program}`, { method: 'GET' })
         .then(response => {
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             return response.json();
@@ -42,7 +55,9 @@ function populateCourseDropdown() {
         .catch(error => alert('Error loading courses: ' + error.message));
 }
 
-// Fetch and Populate Questions
+
+let allQuestions = []; // Store all fetched questions for the selected course
+// fetch questions
 function fetchQuestions(courseCode) {
     fetch(`controllers/question.php?course_code=${courseCode}`, { method: 'GET' })
         .then(response => {
@@ -50,43 +65,67 @@ function fetchQuestions(courseCode) {
             return response.json();
         })
         .then(data => {
-            const filteredQuestionsEl = document.getElementById("filteredQuestions");
+            // Store fetched questions globally
+            allQuestions = data.data.questions;
+
+            // Render questions initially
+            renderQuestions(allQuestions);
+
+            // Populate Marks Dropdown
             const marksDropdown = document.getElementById("marks");
-            filteredQuestionsEl.innerHTML = '';
+            const uniqueMarks = [...new Set(allQuestions.map(q => q.marks))];
             marksDropdown.innerHTML = '<option value="">-- Select Marks --</option>';
-
-            if (data.data.questions.length === 0) {
-                filteredQuestionsEl.innerHTML = '<li>No questions available</li>';
-            } else {
-                const uniqueMarks = new Set();
-
-                data.data.questions.forEach(question => {
-                    uniqueMarks.add(question.marks);
-
-                    const li = document.createElement("li");
-                    li.dataset.id = question.id;
-                    li.dataset.marks = question.marks;
-                    li.dataset.level = question.level;
-                    li.dataset.outcomeId = question.outcome_id;
-
-                    li.innerHTML = `
-                        ${question.question_text}
-                        <button onclick="handleQuestionAction(${question.id}, 'add')">Add</button>
-                    `;
-                    filteredQuestionsEl.appendChild(li);
-                });
-
-                // Populate Marks Dropdown
-                [...uniqueMarks].sort((a, b) => a - b).forEach(mark => {
-                    const option = document.createElement("option");
-                    option.value = mark;
-                    option.textContent = mark;
-                    marksDropdown.appendChild(option);
-                });
-            }
+            uniqueMarks.sort((a, b) => a - b).forEach(mark => {
+                const option = document.createElement("option");
+                option.value = mark;
+                option.textContent = mark;
+                marksDropdown.appendChild(option);
+            });
         })
         .catch(error => alert('Error loading questions: ' + error.message));
 }
+
+
+function renderQuestions(questions) {
+    const filteredQuestionsEl = document.getElementById("filteredQuestions");
+    filteredQuestionsEl.innerHTML = '';
+
+    if (questions.length === 0) {
+        filteredQuestionsEl.innerHTML = '<li>No questions available</li>';
+    } else {
+        questions.forEach(question => {
+            const li = document.createElement("li");
+            li.dataset.id = question.id;
+            li.dataset.marks = question.marks;
+            li.dataset.level = question.level;
+            li.dataset.outcomeId = question.outcome_id;
+
+            li.innerHTML = `
+                ${question.question_text}
+                <button onclick="handleQuestionAction(${question.id}, 'add')">Add</button>
+            `;
+            filteredQuestionsEl.appendChild(li);
+        });
+    }
+}
+
+document.getElementById("filterBtn").addEventListener("click", () => {
+    const marks = document.getElementById("marks").value;
+    const level = document.getElementById("level").value;
+    const outcome = document.getElementById("outcome").value;
+
+    // Filter from the global `allQuestions` array
+    const filtered = allQuestions.filter(question => {
+        return (
+            (!marks || question.marks == marks) &&
+            (!level || question.level === level) &&
+            (!outcome || question.outcome_id == outcome)
+        );
+    });
+
+    renderQuestions(filtered); // Update the UI with the filtered questions
+});
+
 
 // Fetch and Populate Outcomes
 function fetchOutcomes(courseCode) {
@@ -129,25 +168,26 @@ function handleQuestionAction(id, action) {
     }
 }
 
-// Filter Questions Based on Criteria
-document.getElementById("filterBtn").addEventListener("click", () => {
-    const marks = document.getElementById("marks").value;
-    const level = document.getElementById("level").value;
-    const outcome = document.getElementById("outcome").value;
+// // Filter Questions Based on Criteria
+// document.getElementById("filterBtn").addEventListener("click", () => {
 
-    const filtered = Array.from(document.querySelectorAll("#filteredQuestions li")).filter(li => {
-        const question = li.dataset;
-        return (
-            (!marks || question.marks == marks) &&
-            (!level || question.level === level) &&
-            (!outcome || question.outcomeId == outcome)
-        );
-    });
+//     const marks = document.getElementById("marks").value;
+//     const level = document.getElementById("level").value;
+//     const outcome = document.getElementById("outcome").value;
 
-    const filteredQuestionsEl = document.getElementById("filteredQuestions");
-    filteredQuestionsEl.innerHTML = '';
-    filtered.forEach(question => filteredQuestionsEl.appendChild(question));
-});
+//     const filtered = Array.from(document.querySelectorAll("#filteredQuestions li")).filter(li => {
+//         const question = li.dataset;
+//         return (
+//             (!marks || question.marks == marks) &&
+//             (!level || question.level === level) &&
+//             (!outcome || question.outcomeId == outcome)
+//         );
+//     });
+
+//     const filteredQuestionsEl = document.getElementById("filteredQuestions");
+//     filteredQuestionsEl.innerHTML = '';
+//     filtered.forEach(question => filteredQuestionsEl.appendChild(question));
+// });
 
 // Initialize Dashboard
 populateYearDropdown();
