@@ -109,7 +109,7 @@ function renderQuestions(questions) {
 
             li.innerHTML = `
                 ${question.question_text}
-                <button onclick="handleQuestionAction(${question.id}, 'add')">Add</button>
+                <button onclick="handleAddQuestionInReport(${question.id})">Add</button>
             `;
             filteredQuestionsEl.appendChild(li);
         });
@@ -156,42 +156,160 @@ function fetchOutcomes(courseCode) {
 }
 
 
-function handleAddQuestionInReport(id){
+function handleAddQuestionInReport(id) {
     const courseCode = document.getElementById('course').value;
     const year = document.getElementById('year').value;
-    const question = allQuestions.find(question => question.id == id);
-    if(question && courseCode && year){
-        console.log(question);
+
+    if (!courseCode || !year) {
+        alert("Please select a course and year first.");
+        return;
     }
+
+    fetch('controllers/report.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            course_code: courseCode,
+            year: year,
+            question_id: id
+        })
+    })
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            alert("Question added to report successfully!");
+            fetchQuestionReport(); // Refresh the report
+        })
+        .catch(error => alert("Error adding question to report: " + error.message));
 }
 
-function handleDeleteQuestionFromReport(id){
+function handleRemoveQuestionFromReport(id) {
+    console.log(id);
     const courseCode = document.getElementById('course').value;
     const year = document.getElementById('year').value;
-    const question = allQuestions.find(question => question.id == id);
-    if(question && courseCode && year){
-        console.log(question);
+
+    if (!courseCode || !year) {
+        alert("Please select a course and year first.");
+        return;
     }
+
+    fetch(`controllers/report.php?course_code=${courseCode}&year=${year}`, { method: 'GET' })
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            const report = data.data.reports[0]; // Assuming only one report per course_code/year
+            if (!report) {
+                alert("Report not found.");
+                return;
+            }
+
+            const updatedQuestionIds = report.question_id
+                .split(',')
+                .filter(qid => qid != id)
+                .join(',');
+
+            
+            fetch('controllers/report.php', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: report.id,
+                    question_id: updatedQuestionIds
+                })
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    alert("Question removed from report successfully!");
+                    fetchQuestionReport(); // Refresh the report
+                })
+                .catch(error => alert("Error removing question from report: " + error.message));
+        })
+        .catch(error => alert("Error fetching report: " + error.message));
 }
+
 
 function fetchQuestionReport() {
     const courseCode = document.getElementById('course').value;
     const year = document.getElementById('year').value;
-    if(courseCode && year){
-        // Handle Add/Delete Question Actions
-        const report = document.getElementById("report");    
-        report.innerHTML = '';
 
-        const reportHeader = document.createElement("h2");
-        reportHeader.textContent = `Report for Course Code : ${courseCode}, Year : ${year}`;
-        report.appendChild(reportHeader);
-
-        const questionHeader = document.createElement("h3");
-        questionHeader.textContent = `Questions`;
-        report.appendChild(questionHeader);
-
-        
+    if (!courseCode || !year) {
+        alert("Please select a course and year first.");
+        return;
     }
+
+    fetch(`controllers/report.php?course_code=${courseCode}&year=${year}`, { method: 'GET' })
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            const report = document.getElementById("report");
+            report.innerHTML = '';
+
+            if (!data.data.reports || data.data.reports.length === 0) {
+                report.innerHTML = `<h2>No report found for ${courseCode}, Year: ${year}</h2>`;
+                return;
+            }
+
+            const reportHeader = document.createElement("h2");
+            reportHeader.textContent = `Report for Course Code: ${courseCode}, Year: ${year}`;
+            report.appendChild(reportHeader);
+
+            const questionsList = document.createElement("ul");
+            data.data.reports[0].questions.forEach(question => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    Marks : ${question.marks} Level : ${question.level} </br>
+                    Outcome : ${question.outcome_text} </br>
+                    Question : ${question.question_text} 
+                    <button onclick="handleRemoveQuestionFromReport(${question.id})">Remove</button>
+                `;
+                questionsList.appendChild(li);
+            });
+
+            report.appendChild(questionsList);
+            
+            const button = `<button id="downloadPdf" onClick="downloadAsPdf()">Download as PDF</button>`;
+            report.innerHTML += button;
+        })
+        .catch(error => alert("Error fetching report: " + error.message));
+}
+
+
+function downloadAsPdf(){
+    // Get the content of the report
+    const reportContent = document.getElementById("report").innerHTML;
+
+    // Send the content to the server
+    fetch("controllers/generate_pdf.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content: reportContent }),
+    })
+    .then((response) => response.blob())
+    .then((blob) => {
+        // Create a link to download the PDF
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "report.pdf";
+        link.click();
+    })
+    .catch((error) => {
+        console.error("Error generating PDF:", error);
+    });
 }
 
 

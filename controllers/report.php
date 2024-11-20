@@ -67,12 +67,10 @@ switch ($requestMethod) {
         $stmt = mysqli_prepare($conn, $query);
     
         if (!empty($params)) {
-            $types = str_repeat("s", count($params));
-            if ($year) {
-                $types .= "i"; // Add integer type for year
-            }
+            $types = "si"; // Corrected the type string to match the parameters
             mysqli_stmt_bind_param($stmt, $types, ...$params);
         }
+        
     
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
