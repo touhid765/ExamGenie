@@ -25,6 +25,7 @@
             <div>
                 <label for="year">Select Year:</label>
                 <select id="year" name="year">
+                    <option value="">Select Year</option>
                     <!-- Dynamic year options will be added here -->
                 </select>
             </div>
@@ -39,7 +40,7 @@
 
             <label for="level">Level:</label>
             <select id="level" name="level">
-                <option value="">-- Select Level --</option>
+                <option value="">Select Level</option>
                 <option value="L1">L1</option>
                 <option value="L2">L2</option>
                 <option value="L3">L3</option>
@@ -64,11 +65,9 @@
         </div>
 
         <!-- Added Questions -->
-        <div class="question-list">
-            <h3>Selected Questions</h3>
-            <ul id="selectedQuestions">
-                <!-- Selected questions will appear here -->
-            </ul>
+
+        <div class="question-list" id="report">
+            
         </div>
     </div>
 

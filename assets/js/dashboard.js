@@ -17,6 +17,12 @@ function populateYearDropdown() {
         option.textContent = year;
         yearDropdown.appendChild(option);
     }
+    yearDropdown.addEventListener("change", function () {
+        const selectedYear = this.value;
+        if (selectedYear) {
+            fetchQuestionReport();
+        }
+    });
 }
 
 // Fetch and Populate Courses
@@ -35,7 +41,7 @@ function populateCourseDropdown() {
         })
         .then(data => {
             const courseDropdown = document.getElementById("course");
-            courseDropdown.innerHTML = '<option value="">-- Select Course --</option>';
+            courseDropdown.innerHTML = '<option value="">Select Course</option>';
 
             data.data.courses.forEach(course => {
                 const option = document.createElement("option");
@@ -49,6 +55,7 @@ function populateCourseDropdown() {
                 if (selectedCourse) {
                     fetchQuestions(selectedCourse);
                     fetchOutcomes(selectedCourse);
+                    fetchQuestionReport();    
                 }
             });
         })
@@ -74,7 +81,7 @@ function fetchQuestions(courseCode) {
             // Populate Marks Dropdown
             const marksDropdown = document.getElementById("marks");
             const uniqueMarks = [...new Set(allQuestions.map(q => q.marks))];
-            marksDropdown.innerHTML = '<option value="">-- Select Marks --</option>';
+            marksDropdown.innerHTML = '<option value="">Select Marks</option>';
             uniqueMarks.sort((a, b) => a - b).forEach(mark => {
                 const option = document.createElement("option");
                 option.value = mark;
@@ -136,7 +143,7 @@ function fetchOutcomes(courseCode) {
         })
         .then(data => {
             const outcomeDropdown = document.getElementById("outcome");
-            outcomeDropdown.innerHTML = '<option value="">-- Select Outcome --</option>';
+            outcomeDropdown.innerHTML = '<option value="">Select Outcome</option>';
 
             data.data.outcomes.forEach(outcome => {
                 const option = document.createElement("option");
@@ -148,46 +155,45 @@ function fetchOutcomes(courseCode) {
         .catch(error => alert('Error loading outcomes: ' + error.message));
 }
 
-// Handle Add/Delete Question Actions
-const selectedQuestionsEl = document.getElementById("selectedQuestions");
 
-function handleQuestionAction(id, action) {
-    const filteredQuestionsEl = document.getElementById("filteredQuestions");
-    const questionEl = filteredQuestionsEl.querySelector(`[data-id='${id}']`) || 
-                       selectedQuestionsEl.querySelector(`[data-id='${id}']`);
-    if (!questionEl) return;
-
-    if (action === "add") {
-        questionEl.querySelector("button").innerText = "Delete";
-        questionEl.querySelector("button").onclick = () => handleQuestionAction(id, 'delete');
-        selectedQuestionsEl.appendChild(questionEl);
-    } else if (action === "delete") {
-        questionEl.querySelector("button").innerText = "Add";
-        questionEl.querySelector("button").onclick = () => handleQuestionAction(id, 'add');
-        filteredQuestionsEl.appendChild(questionEl);
+function handleAddQuestionInReport(id){
+    const courseCode = document.getElementById('course').value;
+    const year = document.getElementById('year').value;
+    const question = allQuestions.find(question => question.id == id);
+    if(question && courseCode && year){
+        console.log(question);
     }
 }
 
-// // Filter Questions Based on Criteria
-// document.getElementById("filterBtn").addEventListener("click", () => {
+function handleDeleteQuestionFromReport(id){
+    const courseCode = document.getElementById('course').value;
+    const year = document.getElementById('year').value;
+    const question = allQuestions.find(question => question.id == id);
+    if(question && courseCode && year){
+        console.log(question);
+    }
+}
 
-//     const marks = document.getElementById("marks").value;
-//     const level = document.getElementById("level").value;
-//     const outcome = document.getElementById("outcome").value;
+function fetchQuestionReport() {
+    const courseCode = document.getElementById('course').value;
+    const year = document.getElementById('year').value;
+    if(courseCode && year){
+        // Handle Add/Delete Question Actions
+        const report = document.getElementById("report");    
+        report.innerHTML = '';
 
-//     const filtered = Array.from(document.querySelectorAll("#filteredQuestions li")).filter(li => {
-//         const question = li.dataset;
-//         return (
-//             (!marks || question.marks == marks) &&
-//             (!level || question.level === level) &&
-//             (!outcome || question.outcomeId == outcome)
-//         );
-//     });
+        const reportHeader = document.createElement("h2");
+        reportHeader.textContent = `Report for Course Code : ${courseCode}, Year : ${year}`;
+        report.appendChild(reportHeader);
 
-//     const filteredQuestionsEl = document.getElementById("filteredQuestions");
-//     filteredQuestionsEl.innerHTML = '';
-//     filtered.forEach(question => filteredQuestionsEl.appendChild(question));
-// });
+        const questionHeader = document.createElement("h3");
+        questionHeader.textContent = `Questions`;
+        report.appendChild(questionHeader);
+
+        
+    }
+}
+
 
 // Initialize Dashboard
 populateYearDropdown();

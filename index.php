@@ -12,6 +12,7 @@
         <h1>ExamGenie</h1>
         <!-- Dropdown with onChange event to trigger action -->
         <select name="profile_type" onchange="redirectToProgramPage(this.value)">
+            <option value="">Select Program</option>
             <option value="BCA" <?php echo (isset($_GET['program']) && $_GET['program'] == 'BCA') ? 'selected' : ''; ?>>BCA</option>
             <option value="MCA" <?php echo (isset($_GET['program']) && $_GET['program'] == 'MCA') ? 'selected' : ''; ?>>MCA</option>
             <option value="M.Tech" <?php echo (isset($_GET['program']) && $_GET['program'] == 'M.Tech') ? 'selected' : ''; ?>>M.Tech</option>
