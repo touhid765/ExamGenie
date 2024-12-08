@@ -17,7 +17,7 @@ $tableCreationQuery = "
         id INT AUTO_INCREMENT PRIMARY KEY,
         outcome TEXT NOT NULL,
         outcome_text TEXT,
-        course_code VARCHAR(100) NOT NULL  -- New column for course code
+        course_code VARCHAR(100) NOT NULL
     );
 ";
 

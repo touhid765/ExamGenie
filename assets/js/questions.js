@@ -58,8 +58,8 @@ function loadOutcomes(courseCode, selectedOutcomeId = null) {
             return response.json();
         })
         .then(data => {
-            outcomes.innerHTML = '<option value="">Select Outcome</option>';
-            editOutcome.innerHTML = '<option value="">Select Outcome</option>';
+            outcomes.innerHTML = '<option value="">Select</option>';
+            editOutcome.innerHTML = '<option value="">Select</option>';
 
             if (data.data.outcomes.length === 0) {
                 outcomes.innerHTML = '<option>No outcomes available</option>';
@@ -68,13 +68,13 @@ function loadOutcomes(courseCode, selectedOutcomeId = null) {
                 data.data.outcomes.forEach(outcome => {
                     const option = document.createElement('option');
                     option.value = outcome.id;
-                    option.innerHTML = outcome.outcome_text;
+                    option.innerHTML = outcome.outcome;
 
                     outcomes.appendChild(option);
 
                     const option1 = document.createElement('option');
                     option1.value = outcome.id;
-                    option1.innerHTML = outcome.outcome_text;
+                    option1.innerHTML = outcome.outcome;
 
                     // Pre-select if this is the selected outcome for editing
                     if (selectedOutcomeId && outcome.id == selectedOutcomeId) {
@@ -142,26 +142,38 @@ function loadQuestions(courseCode) {
             return response.json();
         })
         .then(data => {
-            const questionsList = document.querySelector('#questions-list');
-            questionsList.innerHTML = '';
+            const questionTable = document.querySelector('#question-table tbody'); // Select the table body
+            questionTable.innerHTML = ''; // Clear existing rows
 
             if (data.data.questions.length === 0) {
-                questionsList.innerHTML = '<li>No questions available</li>';
+                // Add a single row indicating no questions are available
+                questionTable.innerHTML = `
+                    <tr>
+                        <td colspan="3" style="text-align: center;">No questions available</td>
+                    </tr>
+                `;
             } else {
                 data.data.questions.forEach(question => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <strong>${question.question_text}</strong> 
-                        (Marks: ${question.marks}, Level: ${question.level})
-                        <br>Outcome: ${question.outcome_text}
-                        <button class="edit" 
-                            onclick="editQuestion(${question.id}, '${question.question_text.replace(/'/g, "\\'")}', ${question.marks}, '${question.level}', '${question.outcome_id}')">
-                            Edit
-                        </button>
-                        <button class="delete" onclick="deleteQuestion(${question.id})">Delete</button>`;
-                    questionsList.appendChild(li);
+                    // Create a new table row
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td style="width:380px;">${question.question_text}</td>
+                        <td style="width:10px;">
+                            ${question.marks} ${question.level} ${question.outcome}
+                        </td>
+                        <td>
+                            <button class="edit" 
+                                onclick="editQuestion(${question.id}, '${question.question_text.replace(/'/g, "\\'")}', ${question.marks}, '${question.level}', '${question.outcome_id}')">
+                                Edit
+                            </button>
+                            <button class="delete" onclick="deleteQuestion(${question.id})">Delete</button>
+                        </td>
+                    `;
+                    // Append the row to the table body
+                    questionTable.appendChild(row);
                 });
             }
+
         })
         .catch(error => alert('Error loading questions: ' + error.message));
 }

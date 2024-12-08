@@ -48,7 +48,7 @@ function fetchQuestions($course_code = null) {
             q.question_text, 
             q.marks, 
             q.level, 
-            o.outcome_text
+            o.outcome
         FROM 
             questions q
         LEFT JOIN 

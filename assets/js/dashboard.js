@@ -82,7 +82,7 @@ function fetchQuestions(courseCode) {
             // Populate Marks Dropdown
             const marksDropdown = document.getElementById("marks");
             const uniqueMarks = [...new Set(allQuestions.map(q => q.marks))];
-            marksDropdown.innerHTML = '<option value="">Select Marks</option>';
+            marksDropdown.innerHTML = '<option value="">Select</option>';
             uniqueMarks.sort((a, b) => a - b).forEach(mark => {
                 const option = document.createElement("option");
                 option.value = mark;
@@ -95,26 +95,37 @@ function fetchQuestions(courseCode) {
 
 
 function renderQuestions(questions) {
-    const filteredQuestionsEl = document.getElementById("filteredQuestions");
-    filteredQuestionsEl.innerHTML = '';
+    const filteredQuestionsEl = document.getElementById("question-list").querySelector("tbody"); // Target the table body
+    filteredQuestionsEl.innerHTML = ''; // Clear existing rows
 
     if (questions.length === 0) {
-        filteredQuestionsEl.innerHTML = '<li>No questions available</li>';
+        // Add a single row indicating no questions are available
+        filteredQuestionsEl.innerHTML = `
+            <tr>
+                <td colspan="2" style="text-align: center;">No questions available</td>
+            </tr>
+        `;
     } else {
         questions.forEach(question => {
-            const li = document.createElement("li");
-            li.dataset.id = question.id;
-            li.dataset.marks = question.marks;
-            li.dataset.level = question.level;
-            li.dataset.outcomeId = question.outcome_id;
+            // Create a new row
+            const row = document.createElement("tr");
+            row.dataset.id = question.id;
+            row.dataset.marks = question.marks;
+            row.dataset.level = question.level;
+            row.dataset.outcomeId = question.outcome_id;
 
-            li.innerHTML = `
-                ${question.question_text}
-                <button onclick="handleAddQuestionInReport(${question.id})">Add</button>
+            // Populate the row with question text and action buttons
+            row.innerHTML = `
+                <td style="width:560px;">${question.question_text}</td>
+                <td>
+                    <button onclick="handleAddQuestionInReport(${question.id})">Add</button>
+                </td>
             `;
-            filteredQuestionsEl.appendChild(li);
+            // Append the row to the table body
+            filteredQuestionsEl.appendChild(row);
         });
     }
+
 }
 
 document.getElementById("filterBtn").addEventListener("click", () => {
@@ -144,12 +155,12 @@ function fetchOutcomes(courseCode) {
         })
         .then(data => {
             const outcomeDropdown = document.getElementById("outcome");
-            outcomeDropdown.innerHTML = '<option value="">Select Outcome</option>';
+            outcomeDropdown.innerHTML = '<option value="">Select</option>';
 
             data.data.outcomes.forEach(outcome => {
                 const option = document.createElement("option");
                 option.value = outcome.id;
-                option.textContent = outcome.outcome_text;
+                option.textContent = outcome.outcome;
                 outcomeDropdown.appendChild(option);
             });
         })
@@ -255,34 +266,80 @@ function fetchQuestionReport() {
             return response.json();
         })
         .then(data => {
-            const report = document.getElementById("report");
-            report.innerHTML = '';
-
-            if (!data.data.reports || data.data.reports.length === 0) {
-                report.innerHTML = `<h2>No report found for ${courseCode}, Year: ${year}</h2>`;
+            const reportElement = document.getElementById("report");
+            if (!reportElement) {
+                console.error("Element with ID 'report' not found.");
                 return;
             }
 
-            const reportHeader = document.createElement("h2");
-            reportHeader.textContent = `Report for Course Code: ${courseCode}, Year: ${year}`;
-            report.appendChild(reportHeader);
+            const tbody = reportElement.querySelector("tbody");
+            if (!tbody) {
+                console.error("'tbody' inside '#report' not found.");
+                return;
+            }
 
-            const questionsList = document.createElement("ul");
+            // Clear existing content
+            tbody.innerHTML = '';
+
+            // Check if there are any reports
+            if (!data.data.reports || data.data.reports.length === 0) {
+                const reportMessage = document.getElementById("report-message") || document.createElement("h2");
+                reportMessage.id = "report-message";
+                reportMessage.style.padding = "10px";
+                reportMessage.textContent = `No report found for ${courseCode}, Year: ${year}`;
+                reportElement.parentElement.insertBefore(reportMessage, reportElement);
+
+                const buttonContainer = document.getElementById("download-container");
+                if (buttonContainer) {
+                    buttonContainer.remove();
+                }
+
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="2" style="text-align: center;">No questions available</td>
+                    </tr>`
+
+                return;
+            }
+
+            
+            // Clear any previous message
+            const reportMessage = document.getElementById("report-message") || document.createElement("h2");
+            if (reportMessage) {
+                reportMessage.id = "report-message";
+                reportMessage.style.padding = "10px";
+                reportMessage.textContent = `Report found for ${courseCode}, Year: ${year}`;
+                reportElement.parentElement.insertBefore(reportMessage, reportElement);
+            }
+
+            // Add rows to the table
             data.data.reports[0].questions.forEach(question => {
-                const li = document.createElement("li");
-                li.innerHTML = `
-                    Marks : ${question.marks} Level : ${question.level} </br>
-                    Outcome : ${question.outcome_text} </br>
-                    Question : ${question.question_text} 
-                    <button onclick="handleRemoveQuestionFromReport(${question.id})">Remove</button>
+                const row = document.createElement("tr");
+                const detailsCell = document.createElement("td");
+                detailsCell.innerHTML = `
+                    <strong>Marks:</strong> ${question.marks}<br>
+                    <strong>Level:</strong> ${question.level}<br>
+                    <strong>Outcome:</strong> ${question.outcome}<br>
+                    <strong>Question:</strong> ${question.question_text}
                 `;
-                questionsList.appendChild(li);
+                const actionCell = document.createElement("td");
+                actionCell.innerHTML = `<button onclick="handleRemoveQuestionFromReport(${question.id})">Remove</button>`;
+                row.appendChild(detailsCell);
+                row.appendChild(actionCell);
+                tbody.appendChild(row);
             });
 
-            report.appendChild(questionsList);
-            
-            const button = `<button id="downloadPdf" onClick="downloadAsPdf()">Download as PDF</button>`;
-            report.innerHTML += button;
+            // Add the PDF button
+            const buttonContainer = document.getElementById("download-container") || document.createElement("div");
+            buttonContainer.id = "download-container";
+            buttonContainer.style.margin = "10px";
+            buttonContainer.innerHTML = '';
+            const downloadButton = document.createElement("button");
+            downloadButton.id = "downloadPdf";
+            downloadButton.textContent = "Download as PDF";
+            downloadButton.onclick = downloadAsPdf;
+            buttonContainer.appendChild(downloadButton);
+            reportElement.appendChild(buttonContainer);
         })
         .catch(error => alert("Error fetching report: " + error.message));
 }

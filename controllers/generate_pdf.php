@@ -42,7 +42,7 @@ $pdf->SetFont('Arial', '', 12);
 
 $n = 1;
 foreach ($report['questions'] as $question) {
-    $questionText = "$n. " . $question['question_text'] . " [ Marks: {$question['marks']}, {$question['level']}, CO{$question['outcome_id']} ]";
+    $questionText = "$n. " . $question['question_text'] . " [ Marks: {$question['marks']}, {$question['level']}, {$question['outcome']} ]";
 
     // Check if content will overflow and add a new page if necessary
     if ($pdf->GetY() + 10 > 280) { // If the Y position is near the bottom of the page

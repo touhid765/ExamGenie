@@ -24,27 +24,37 @@
                 <input type="text" id="outcome" name="outcome" required placeholder="Enter outcome i.e CO1, CO2, etc" aria-describedby="outcome-help">
                 
                 <label for="outcomeText">Outcome Text:</label>
-                <input type="text" id="outcomeText" name="outcomeText" required placeholder="Enter outcome description" aria-describedby="outcome-help">
+                <textarea style="max-width: 100%; min-width: 100%; height:258px; max-height:258px;min-height:258px;" type="text" id="outcomeText" name="outcomeText" required placeholder="Enter outcome description" aria-describedby="outcome-help"></textarea>
 
                 <button type="submit" aria-label="Submit new outcome">Submit</button>
             </form>
         
             <!-- Outcomes List -->
-            <div class="innerDiv" >
-                <!-- <h3>Outcomes List</h3> -->
-                <ul id="outcomes-list">
-                    <!-- List of outcomes will be displayed here dynamically -->
-                </ul>
+            <div class="innerDiv" style="padding:0;">
+                <table style="margin:0;" id="outcome-table">
+                    <thead>
+                        <tr>
+                            <th>CO</th>
+                            <th>Text</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Outcomes rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
             </div>
 
             <!-- Edit Outcome Modal -->
             <div id="editOutcomeModal" class="modal">
-                <div class="modal-content">
+                <div class="modal-content" style="height: 75%;">
                     <span class="close" onclick="closeModal()">&times;</span>
                     <h2>Edit Outcome</h2>
                     <form id="editOutcomeForm">
+                        <label for="editOutcome">Outcome</label>
+                        <input type="text" id="editOutcome" />
                         <label for="editOutcomeText">Outcome Text</label>
-                        <textarea id="editOutcomeText" rows="4" required></textarea>
+                        <textarea style="max-width: 100%; min-width: 100%; height:216px; max-height:216px; min-height: 216px;" id="editOutcomeText" rows="4" required></textarea>
                         <input type="hidden" id="editOutcomeId" />
                         <button type="submit">Save Changes</button>
                     </form>

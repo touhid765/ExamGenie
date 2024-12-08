@@ -98,7 +98,7 @@ document.getElementById('add-course-form').addEventListener('submit', function(e
 // Open the edit modal with course data
 function openEditModal(courseId, courseName, courseCode, credits) {
     const modal = document.getElementById('edit-modal');
-    modal.classList.add('show');
+    modal.style.display = 'block';
     document.getElementById('edit_course_id').value = courseId;
     document.getElementById('edit_course_name').value = courseName;
     document.getElementById('edit_course_code').value = courseCode;
@@ -107,7 +107,7 @@ function openEditModal(courseId, courseName, courseCode, credits) {
 
 // Close the edit modal
 function closeEditModal() {
-    document.getElementById('edit-modal').classList.remove('show');
+    document.getElementById('edit-modal').style.display = 'none';
 }
 
 // Update the course
@@ -163,7 +163,7 @@ document.getElementById('edit-form').addEventListener('submit', function(event) 
 
 // Delete the course
 function deleteCourse(courseId) {
-    if (confirm("Are you sure you want to delete this course?")) {
+    if (confirm("This course will be deleted?")) {
         fetch('controllers/course.php', {
             method: 'DELETE',
             headers: {

@@ -52,20 +52,28 @@ function loadOutcomes(courseCode) {
             return response.json();
         })
         .then(data => {
-            const outcomesList = document.querySelector('#outcomes-list');
-            outcomesList.innerHTML = '';
+            const outcomeTable = document.querySelector('#outcome-table tbody');
+            outcomeTable.innerHTML = ''; // Clear existing rows
 
             if (data.data.outcomes.length === 0) {
-                outcomesList.innerHTML = '<li>No outcomes available</li>';
+                // If no outcomes are available, insert a row with a message
+                outcomeTable.innerHTML = `
+                    <tr>
+                        <td colspan="3" style="text-align: center;">No outcomes available</td>
+                    </tr>`;
             } else {
+                // Populate the table with outcomes
                 data.data.outcomes.forEach(outcome => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `${outcome.outcome} ${outcome.outcome_text} 
-                        <button class="edit" onclick="editOutcome(${outcome.id}, '${outcome.outcome_text.replace(/'/g, "\\'")}', '${outcome.outcome.replace(/'/g, "\\'")}')">Edit</button>
-                        <button class="delete" onclick="deleteOutcome(${outcome.id})">Delete</button>`;
-                    outcomesList.appendChild(li);
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${outcome.outcome}</td>
+                        <td style="width:380px;">${outcome.outcome_text}</td>
+                        <td>
+                            <button class="edit" onclick="editOutcome(${outcome.id}, '${outcome.outcome_text.replace(/'/g, "\\'")}', '${outcome.outcome.replace(/'/g, "\\'")}')">Edit</button>
+                            <button class="delete" onclick="deleteOutcome(${outcome.id})">Delete</button>
+                        </td>`;
+                    outcomeTable.appendChild(row);
                 });
-                
             }
         })
         .catch(error => alert('Error loading outcomes: ' + error.message));
@@ -106,7 +114,6 @@ document.getElementById('outcomeForm').addEventListener('submit', function(event
 
 // Edit an outcome using a modal popup
 function editOutcome(outcomeId, outcomeText, outcome) {
-    // console.log(outcomeId, outcomeText, outcome)
     // Populate the modal with the current outcome details
     document.getElementById('editOutcomeText').value = outcomeText;
     document.getElementById('editOutcome').value = outcome;
