@@ -60,8 +60,8 @@ function loadOutcomes(courseCode) {
             } else {
                 data.data.outcomes.forEach(outcome => {
                     const li = document.createElement('li');
-                    li.innerHTML = `${outcome.outcome_text} 
-                        <button class="edit" onclick="editOutcome(${outcome.id}, '${outcome.outcome_text.replace(/'/g, "\\'")}')">Edit</button>
+                    li.innerHTML = `${outcome.outcome} ${outcome.outcome_text} 
+                        <button class="edit" onclick="editOutcome(${outcome.id}, '${outcome.outcome_text.replace(/'/g, "\\'")}', '${outcome.outcome.replace(/'/g, "\\'")}')">Edit</button>
                         <button class="delete" onclick="deleteOutcome(${outcome.id})">Delete</button>`;
                     outcomesList.appendChild(li);
                 });
@@ -76,10 +76,11 @@ document.getElementById('outcomeForm').addEventListener('submit', function(event
     event.preventDefault();
 
     const courseCode = document.getElementById('course').value;
-    const outcomeText = document.getElementById('outcome').value.trim();
+    const outcome = document.getElementById('outcome').value.trim();
+    const outcomeText = document.getElementById('outcomeText').value.trim();
 
-    if (outcomeText === '') {
-        alert('Outcome text is required.');
+    if (outcome === '') {
+        alert('Outcome is required.');
         return;
     }
 
@@ -88,7 +89,7 @@ document.getElementById('outcomeForm').addEventListener('submit', function(event
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ course_code: courseCode, outcome_text: outcomeText })  // Use course_code
+        body: JSON.stringify({ course_code: courseCode, outcome:outcome, outcome_text: outcomeText })  // Use course_code
     })
     .then(response => {
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
@@ -98,15 +99,17 @@ document.getElementById('outcomeForm').addEventListener('submit', function(event
         alert(data.message);
         loadOutcomes(courseCode);  // Reload outcomes for the selected course
         document.getElementById('outcome').value = '';  // Clear the form
+        document.getElementById('outcomeText').value = '';
     })
     .catch(error => alert('Error adding outcome: ' + error.message));
 });
 
 // Edit an outcome using a modal popup
-function editOutcome(outcomeId, outcomeText) {
-    console.log(outcomeId, outcomeText)
+function editOutcome(outcomeId, outcomeText, outcome) {
+    // console.log(outcomeId, outcomeText, outcome)
     // Populate the modal with the current outcome details
     document.getElementById('editOutcomeText').value = outcomeText;
+    document.getElementById('editOutcome').value = outcome;
     document.getElementById('editOutcomeId').value = outcomeId;
 
     // Show the modal
@@ -124,10 +127,11 @@ document.getElementById('editOutcomeForm').addEventListener('submit', function(e
 
     const outcomeId = document.getElementById('editOutcomeId').value;
     const outcomeText = document.getElementById('editOutcomeText').value.trim();
+    const outcome = document.getElementById('editOutcome').value.trim();
     const courseCode = document.getElementById('course').value;
 
-    if (outcomeText === '') {
-        alert('Outcome text is required.');
+    if (outcome === '') {
+        alert('Outcome is required.');
         return;
     }
 
@@ -137,7 +141,7 @@ document.getElementById('editOutcomeForm').addEventListener('submit', function(e
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: outcomeId, outcome_text: outcomeText, course_code: courseCode })
+        body: JSON.stringify({ id: outcomeId, outcome:outcome, outcome_text: outcomeText, course_code: courseCode })
     })
     .then(response => {
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);

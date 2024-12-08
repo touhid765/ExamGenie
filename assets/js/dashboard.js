@@ -1,7 +1,8 @@
 // Helper function to get 'program' from URL parameters
 function getProgramFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('program');
+    const program = urlParams.get('program');
+    return program ? program : 'BCA';
 }  
 
 // Populate Year Dropdown

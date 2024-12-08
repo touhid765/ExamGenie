@@ -5,32 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExamGenie - A Question Setting Software</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <!-- Header Section -->
     <header>
-        <h1>ExamGenie</h1>
-        <!-- Dropdown with onChange event to trigger action -->
-        <select name="profile_type" onchange="redirectToProgramPage(this.value)">
-            <option value="">Select Program</option>
-            <option value="BCA" <?php echo (isset($_GET['program']) && $_GET['program'] == 'BCA') ? 'selected' : ''; ?>>BCA</option>
-            <option value="MCA" <?php echo (isset($_GET['program']) && $_GET['program'] == 'MCA') ? 'selected' : ''; ?>>MCA</option>
-            <option value="M.Tech" <?php echo (isset($_GET['program']) && $_GET['program'] == 'M.Tech') ? 'selected' : ''; ?>>M.Tech</option>
-            <option value="B.Tech" <?php echo (isset($_GET['program']) && $_GET['program'] == 'B.Tech') ? 'selected' : ''; ?>>B.Tech</option>
-        </select>
+        <h1>Exam<i class="fa-brands fa-google fa-bounce"></i>enie</h1>
+        <div>
+            <!-- Dropdown with onChange event to trigger action -->
+            <select name="profile_type" onchange="redirectToProgramPage(this.value)">
+                <option value="BCA" <?php echo (isset($_GET['program']) && $_GET['program'] == 'BCA') ? 'selected' : ''; ?>>BCA</option>
+                <option value="MCA" <?php echo (isset($_GET['program']) && $_GET['program'] == 'MCA') ? 'selected' : ''; ?>>MCA</option>
+                <option value="M.Tech" <?php echo (isset($_GET['program']) && $_GET['program'] == 'M.Tech') ? 'selected' : ''; ?>>M.Tech</option>
+                <option value="B.Tech" <?php echo (isset($_GET['program']) && $_GET['program'] == 'B.Tech') ? 'selected' : ''; ?>>B.Tech</option>
+            </select>
+        </div>
     </header>
 
     <!-- Sidebar Section -->
     <aside>
-        <nav>
-            <ul>
-                <li><a href="?page=dashboard&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Dashboard</a></li>
-                <li><a href="?page=add-courses&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Add Courses</a></li>
-                <li><a href="?page=add-outcomes&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Add Outcomes</a></li>
-                <li><a href="?page=add-questions&program=<?php echo isset($_GET['program']) ? $_GET['program'] : ''; ?>">Add Questions</a></li>
-            </ul>
-        </nav>
+        <ul>
+            <li><a href="?page=dashboard&program=<?php echo isset($_GET['program']) ? $_GET['program'] : 'BCA'; ?>" 
+                   class="<?php echo (!isset($_GET['page']) || $_GET['page'] === 'dashboard') ? 'active' : ''; ?>">
+                <i class="fa-solid fa-dice-d6"></i> Dashboard</a></li>
+            <li><a href="?page=add-courses&program=<?php echo isset($_GET['program']) ? $_GET['program'] : 'BCA'; ?>" 
+                   class="<?php echo (isset($_GET['page']) && $_GET['page'] === 'add-courses') ? 'active' : ''; ?>">
+                <i class="fa-solid fa-chalkboard"></i> Courses</a></li>
+            <li><a href="?page=add-outcomes&program=<?php echo isset($_GET['program']) ? $_GET['program'] : 'BCA'; ?>" 
+                   class="<?php echo (isset($_GET['page']) && $_GET['page'] === 'add-outcomes') ? 'active' : ''; ?>">
+                <i class="fa-solid fa-trophy"></i> Outcomes</a></li>
+            <li><a href="?page=add-questions&program=<?php echo isset($_GET['program']) ? $_GET['program'] : 'BCA'; ?>" 
+                   class="<?php echo (isset($_GET['page']) && $_GET['page'] === 'add-questions') ? 'active' : ''; ?>">
+                <i class="fa-regular fa-circle-question"></i> Questions</a></li>
+        </ul>
     </aside>
+
+
 
     <!-- Main Content Area -->
     <main class="content">
@@ -45,16 +55,13 @@
         ?>
     </main>
 
-    <!-- Footer Section -->
-    <footer>
-        <p>&copy; 2024 Question Setting Software</p>
-    </footer>
-
     <script>
         // Function to redirect to a page with selected program
         function redirectToProgramPage(selectedProgram) {
             // If no program is selected, just return (do nothing)
-            if (!selectedProgram) return;
+            if (!selectedProgram){
+                selectedProgram = 'BCA'
+            }
             
             // Get the current URL query parameters, including the 'page' and 'program'
             const urlParams = new URLSearchParams(window.location.search);

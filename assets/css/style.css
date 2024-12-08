@@ -1,3 +1,166 @@
+h2, h3 {
+    color: #004d40;
+    margin-bottom: 15px;
+}
+
+a {
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+form {
+    padding: 10px;
+    border-radius: 10px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 8px;
+    color: #004d40;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background-color: #e0f2f1;
+    color: #004d40;
+    border: 1px solid #26a69a;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #00796b;
+    background-color: #c5e1e0;
+}
+
+button {
+    padding: 12px 20px;
+    background-color: #00796b;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #004d40;
+    color: #ffffff;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 25px;
+    box-shadow: 0px 6px 12px rgba(8, 97, 42, 0.6);
+}
+
+thead {
+    background-color: #80cbc4;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+    color: #004d40;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 10px 0;
+    padding: 0.5px 0px;
+    display: flex;
+    align-items: center;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #f1f1f1;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #004d40;
+    border-radius: 5px;
+    width: 50%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: var();
+}
+
+
+
+.space {
+    display: flex;
+    flex-direction: column; /* Stack head and container vertically */
+    width: 100%;
+
+}
+
+.container{
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+.head{
+    display: flex;
+    justify-content: left;
+    align-content: left;
+    gap: 25px;
+}
+
+.head div{
+    display: flex;
+    justify-content: left;
+    align-content: left;
+    gap: 10px;
+}
+
+.head label{
+    font-size: larger;
+    white-space: nowrap;
+}
+
+
+.container .innerDiv{
+    width: 50%;
+    padding: 15px;
+    max-height: 75vh;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(8, 101, 31, 0.6);
+}
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -5,8 +168,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: #121212; /* Dark background */
-    color: #e0e0e0; /* Light text for readability */
+    color: #0c0c0c; /* Light text for readability */
     box-sizing: border-box; /* Include padding and border in width/height calculation */
 }
 
@@ -15,9 +177,10 @@ body {
 }
 
 header {
-    background: #1f1f1f; /* Dark header */
-    color: #e0e0e0; /* Light text */
-    padding: 10px 20px;
+    background: #80cbc4; /* Dark header */
+    color: #004d40;
+    font-weight: bold;
+    padding: 0px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,11 +190,18 @@ header {
     position: relative; /* Ensure header stays at the top */
 }
 
+h1{
+    font-size: 25px;
+    color: #004d40;
+}
+h1 i{
+    font-weight: bold;
+}
 header select {
-    padding: 5px;
-    background-color: #333; /* Dark select box */
-    color: #e0e0e0; /* Light text */
-    border: 1px solid #444; /* Subtle border */
+    padding: 10px;
+    margin-top: 7px;
+    background-color: #004d40; /* Dark select box */
+    color: #fff; /* Light text */
 }
 
 main {
@@ -44,17 +214,13 @@ main {
 }
 
 aside {
-    background: #242424; /* Dark sidebar */
-    padding: 20px;
-    width: 250px; /* Fixed sidebar width */
-    height: calc(100% - 80px); /* Full height */
-    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.5);
+    background: #004d40; /* Dark sidebar */
+    width: 16%; /* Fixed sidebar width */
+    height: calc(100% - 46px); /* Full height */
     position: absolute; /* Adjust position to avoid overlap with content */
-    top: 60px; /* Offset for header height */
+    top: 46px; /* Offset for header height */
     left: 0;
-    overflow-y: auto; /* Enable vertical scroll in sidebar */
-    max-width: 250px; /* Ensure sidebar does not overflow */
-    margin-top: 20px;
+
 }
 
 aside ul {
@@ -63,63 +229,57 @@ aside ul {
 }
 
 aside ul li {
-    margin: 10px 0;
+    margin: 0;
 }
 
 aside ul li a {
     text-decoration: none;
-    color: #80c7ff; /* Light blue for links */
-    transition: color 0.3s;
+    color: #fff; /* Light blue for links */
+    transition: color 0.3s, background-color 0.3s;
+    font-size: 18px;
+    padding: 25px 30px;
+    display: block;
+    width: 100%;
 }
 
 aside ul li a:hover {
-    color: #ffffff; /* White on hover */
+    color: #004d40; /* White on hover */
+    background-color: #fff;
+}
+
+/* Active Sidebar Link */
+aside ul li a.active {
+    background-color: #fff; /* Same as hover background */
+    color: #004d40; /* Sidebar background color for text */
+    font-weight: bold; /* Optional: Make it bold to highlight */
+}
+
+aside ul li a i{
+    font-size: 24px;
+    margin-right: 7px;
 }
 
 .content {
     flex-grow: 1;
-    margin-left: 250px; /* Offset content for the sidebar */
+    margin-left: 16%; /* Offset content for the sidebar */
     padding: 20px;
-    background: #1f1f1f; /* Dark content background */
-    color: #e0e0e0; /* Light text */
+    background-image: linear-gradient(to bottom, #ffffff, #f0f0f0); /* Dark content background */
     overflow-y: auto; /* Enable vertical scroll if content overflows */
     height: 100%; /* Ensure the content takes up full available height */
-    max-width: calc(100% - 250px); /* Ensure content doesn't overflow on the right */
+    max-width: calc(100% - 16%); /* Ensure content doesn't overflow on the right */
     padding-top: 20px;
 }
 
-footer {
-    background: #333; /* Dark footer */
-    color: #e0e0e0; /* Light text */
-    text-align: center;
-    padding: 10px;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    margin-top: auto; /* Push footer to the bottom */
+/* Style the scrollbar for the courses table container */
+::-webkit-scrollbar {
+    width: 1px; /* Set the width of the scrollbar */
 }
 
-footer a {
-    color: #80c7ff; /* Light blue footer link */
-    text-decoration: none;
+::-webkit-scrollbar-thumb {
+    background-color: #ffffff; /* Set the thumb color to black */
+    border-radius: 5px; /* Add rounded corners (optional) */
 }
 
-footer a:hover {
-    color: #ffffff; /* White on hover */
-}
-
-/* Media query for smaller screens */
-@media (max-width: 768px) {
-    aside {
-        position: relative;
-        width: 100%;
-        height: auto;
-        top: 0; /* Remove top offset for smaller screens */
-        padding: 10px; /* Adjust padding for smaller screens */
-    }
-
-    .content {
-        margin-left: 0; /* Remove sidebar offset for smaller screens */
-        max-width: 100%; /* Ensure content area doesn't overflow */
-    }
+::-webkit-scrollbar-track {
+    background-color: #f5f2f2 /* Set the track color to black */
 }

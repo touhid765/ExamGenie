@@ -15,7 +15,8 @@ if (!$conn) {
 $tableCreationQuery = "
     CREATE TABLE IF NOT EXISTS outcomes (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        outcome_text TEXT NOT NULL,
+        outcome TEXT NOT NULL,
+        outcome_text TEXT,
         course_code VARCHAR(100) NOT NULL  -- New column for course code
     );
 ";
@@ -68,15 +69,16 @@ switch ($requestMethod) {
         // Read and decode JSON input
         $inputData = json_decode(file_get_contents("php://input"), true);
 
-        if (!isset($inputData['outcome_text'], $inputData['course_code']) ||
-            empty($inputData['outcome_text']) || empty($inputData['course_code'])) {
+        if (!isset($inputData['outcome'], $inputData['course_code']) ||
+            empty($inputData['outcome']) || empty($inputData['course_code'])) {
             sendResponse([], 400, 'Invalid or missing input fields');
         }
 
         $outcome_text = $inputData['outcome_text'];
+        $outcome = $inputData['outcome'];
         $course_code = $inputData['course_code'];
         
-        $query = "INSERT INTO outcomes (outcome_text, course_code) VALUES ('$outcome_text', '$course_code')";
+        $query = "INSERT INTO outcomes (outcome_text, outcome, course_code) VALUES ('$outcome_text', '$outcome', '$course_code')";
         if (mysqli_query($conn, $query)) {
             $outcomes = fetchOutcomes();
             sendResponse($outcomes, 201, 'Outcome added successfully');
@@ -89,16 +91,17 @@ switch ($requestMethod) {
         // Read and decode JSON input
         $inputData = json_decode(file_get_contents("php://input"), true);
 
-        if (!isset($inputData['id'], $inputData['outcome_text'], $inputData['course_code']) ||
-            empty($inputData['outcome_text']) || empty($inputData['course_code'])) {
+        if (!isset($inputData['id'], $inputData['outcome'], $inputData['course_code']) ||
+            empty($inputData['outcome']) || empty($inputData['course_code'])) {
             sendResponse([], 400, 'Invalid or missing input fields');
         }
 
         $id = (int)$inputData['id'];
         $outcome_text = $inputData['outcome_text'];
+        $outcome = $inputData['outcome'];
         $course_code = $inputData['course_code'];
 
-        $query = "UPDATE outcomes SET outcome_text = '$outcome_text', course_code = '$course_code' WHERE id = $id";
+        $query = "UPDATE outcomes SET outcome_text = '$outcome_text', outcome = '$outcome', course_code = '$course_code' WHERE id = $id";
         if (mysqli_query($conn, $query)) {
             $outcomes = fetchOutcomes();
             sendResponse($outcomes, 200, 'Outcome updated successfully');
