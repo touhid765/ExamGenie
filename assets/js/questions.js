@@ -38,11 +38,21 @@ function loadCourses() {
                     if (selectedCourseCode) {
                         loadOutcomes(selectedCourseCode); // Load outcomes when course changes
                         loadQuestions(selectedCourseCode);
+                        setCourseName(selectedCourseCode, data.data.courses);  
                     }
                 });
             }
         })
         .catch(error => alert('Error loading courses: ' + error.message));
+}
+
+function setCourseName(code, courses){
+    const nameInput = document.getElementById('courseName');
+    courses.forEach(course => {
+        if(course.course_code == code){
+            nameInput.value = course.course_name;
+        }
+    });
 }
 
 function loadOutcomes(courseCode, selectedOutcomeId = null) {

@@ -56,11 +56,21 @@ function populateCourseDropdown() {
                 if (selectedCourse) {
                     fetchQuestions(selectedCourse);
                     fetchOutcomes(selectedCourse);
-                    fetchQuestionReport();    
+                    fetchQuestionReport(); 
+                    setCourseName(selectedCourse, data.data.courses);   
                 }
             });
         })
         .catch(error => alert('Error loading courses: ' + error.message));
+}
+
+function setCourseName(code, courses){
+    const nameInput = document.getElementById('courseName');
+    courses.forEach(course => {
+        if(course.course_code == code){
+            nameInput.value = course.course_name;
+        }
+    });
 }
 
 

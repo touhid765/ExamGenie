@@ -17,6 +17,7 @@
                 <select id="course" name="course">
                     <!-- Dynamic course options will be added here -->
                 </select>
+                <input type="text" id="courseName" readonly placeholder="Course Name" aria-describedby="Course Name">
             </div>
 
             <div>

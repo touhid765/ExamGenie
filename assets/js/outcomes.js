@@ -37,11 +37,21 @@ function loadCourses() {
                     const selectedCourseCode = courses.value;
                     if (selectedCourseCode) {
                         loadOutcomes(selectedCourseCode);  // Load outcomes when course changes
+                        setCourseName(selectedCourseCode, data.data.courses);  
                     }
                 });
             }
         })
         .catch(error => alert('Error loading courses: ' + error.message));
+}
+
+function setCourseName(code, courses){
+    const nameInput = document.getElementById('courseName');
+    courses.forEach(course => {
+        if(course.course_code == code){
+            nameInput.value = course.course_name;
+        }
+    });
 }
 
 // Fetch outcomes for the selected course

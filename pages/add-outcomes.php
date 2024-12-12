@@ -14,6 +14,7 @@
                 <select id="course" name="course" aria-label="Select a course" style="padding-right:10px;"`>
                     <!-- Options of course code will be displayed here dynamically -->
                 </select>
+                <input type="text" id="courseName" readonly placeholder="Course Name" aria-describedby="Course Name">
             </div>
         </div>
         <div class="container">
@@ -24,7 +25,8 @@
                 <input type="text" id="outcome" name="outcome" required placeholder="Enter outcome i.e CO1, CO2, etc" aria-describedby="outcome-help">
                 
                 <label for="outcomeText">Outcome Text:</label>
-                <textarea style="max-width: 100%; min-width: 100%; height:258px; max-height:258px;min-height:258px;" type="text" id="outcomeText" name="outcomeText" required placeholder="Enter outcome description" aria-describedby="outcome-help"></textarea>
+                <textarea style="max-width: 100%; min-width: 100%; height:222px; max-height:222px;min-height:222px;" type="text" id="outcomeText" name="outcomeText" required placeholder="Enter outcome description" aria-describedby="outcome-help"></textarea>
+                <small>Provide the full text. Use back tick, Don't use single or double quotes.</small><br></br>
 
                 <button type="submit" aria-label="Submit new outcome">Submit</button>
             </form>
@@ -54,7 +56,8 @@
                         <label for="editOutcome">Outcome</label>
                         <input type="text" id="editOutcome" />
                         <label for="editOutcomeText">Outcome Text</label>
-                        <textarea style="max-width: 100%; min-width: 100%; height:216px; max-height:216px; min-height: 216px;" id="editOutcomeText" rows="4" required></textarea>
+                        <textarea style="max-width: 100%; min-width: 100%; height:200px; max-height:200px; min-height: 200px;" id="editOutcomeText" rows="4" required></textarea>
+                        <small>Provide the full text. Use back tick, Don't use single or double quotes.</small><br></br>
                         <input type="hidden" id="editOutcomeId" />
                         <button type="submit">Save Changes</button>
                     </form>
