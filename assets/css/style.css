@@ -121,7 +121,7 @@ ul li {
 
 .space {
     display: flex;
-    flex-direction: column; /* Stack head and container vertically */
+    flex-direction: column;
     width: 100%;
 
 }
@@ -169,16 +169,16 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    color: #0c0c0c; /* Light text for readability */
-    box-sizing: border-box; /* Include padding and border in width/height calculation */
+    color: #0c0c0c;
+    box-sizing: border-box;
 }
 
 *, *::before, *::after {
-    box-sizing: inherit; /* Ensure all elements follow box-sizing rule */
+    box-sizing: inherit; 
 }
 
 header {
-    background: #80cbc4; /* Dark header */
+    background: #80cbc4;
     color: #004d40;
     font-weight: bold;
     padding: 0px 20px;
@@ -187,8 +187,8 @@ header {
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     width: 100%;
-    z-index: 1000; /* Keep the header on top */
-    position: relative; /* Ensure header stays at the top */
+    z-index: 1000;
+    position: relative;
 }
 
 h1{
@@ -201,25 +201,25 @@ h1 i{
 header select {
     padding: 10px;
     margin-top: 7px;
-    background-color: #004d40; /* Dark select box */
-    color: #fff; /* Light text */
+    background-color: #004d40;
+    color: #fff;
 }
 
 main {
     display: flex;
     flex-grow: 1;
     padding: 0;
-    height: calc(100vh - 60px); /* Adjust height considering header height */
-    overflow: hidden; /* Prevent body scrolling */
-    width: 100%; /* Ensure main area fits screen */
+    height: calc(100vh - 60px); 
+    overflow: hidden;
+    width: 100%;
 }
 
 aside {
-    background: #004d40; /* Dark sidebar */
-    width: 16%; /* Fixed sidebar width */
-    height: calc(100% - 46px); /* Full height */
-    position: absolute; /* Adjust position to avoid overlap with content */
-    top: 46px; /* Offset for header height */
+    background: #004d40;
+    width: 16%;
+    height: calc(100% - 46px);
+    position: absolute;
+    top: 46px;
     left: 0;
 
 }
@@ -235,7 +235,7 @@ aside ul li {
 
 aside ul li a {
     text-decoration: none;
-    color: #fff; /* Light blue for links */
+    color: #fff; 
     transition: color 0.3s, background-color 0.3s;
     font-size: 18px;
     padding: 25px 30px;
@@ -244,15 +244,14 @@ aside ul li a {
 }
 
 aside ul li a:hover {
-    color: #004d40; /* White on hover */
+    color: #004d40; 
     background-color: #fff;
 }
 
-/* Active Sidebar Link */
 aside ul li a.active {
-    background-color: #fff; /* Same as hover background */
-    color: #004d40; /* Sidebar background color for text */
-    font-weight: bold; /* Optional: Make it bold to highlight */
+    background-color: #fff; 
+    color: #004d40; 
+    font-weight: bold; 
 }
 
 aside ul li a i{
@@ -262,25 +261,25 @@ aside ul li a i{
 
 .content {
     flex-grow: 1;
-    margin-left: 16%; /* Offset content for the sidebar */
+    margin-left: 16%;
     padding: 20px;
-    background-image: linear-gradient(to bottom, #ffffff, #f0f0f0); /* Dark content background */
-    overflow-y: auto; /* Enable vertical scroll if content overflows */
-    height: 100%; /* Ensure the content takes up full available height */
-    max-width: calc(100% - 16%); /* Ensure content doesn't overflow on the right */
+    background-image: linear-gradient(to bottom, #ffffff, #f0f0f0);
+    overflow-y: auto; 
+    height: 100%; 
+    max-width: calc(100% - 16%);
     padding-top: 20px;
 }
 
-/* Style the scrollbar for the courses table container */
+
 ::-webkit-scrollbar {
-    width: 1px; /* Set the width of the scrollbar */
+    width: 1px; 
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #ffffff; /* Set the thumb color to black */
-    border-radius: 5px; /* Add rounded corners (optional) */
+    background-color: #ffffff; 
+    border-radius: 5px; 
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #f5f2f2 /* Set the track color to black */
+    background-color: #f5f2f2
 }

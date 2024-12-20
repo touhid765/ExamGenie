@@ -1,6 +1,7 @@
 <?php
-$servername = "localhost:3306";
+// Use MySql database 
+$servername = "localhost:3309";
 $username = "root";
-$password = "Sadaf2003@";
-$dbname = "genie_db";
+$password = "";
+$dbname = "genie_db"; // Schema name is mandatory
 ?>

@@ -27,7 +27,7 @@ function loadCourses() {
             } else {
                 data.data.courses.forEach(course => {
                     const option = document.createElement('option');
-                    option.value = course.course_code;  // Using course_code instead of id
+                    option.value = course.course_code;
                     option.innerHTML = course.course_code;
                     courses.appendChild(option);
                 });

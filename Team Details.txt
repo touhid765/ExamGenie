@@ -1,0 +1,31 @@
+Team Name - The Trio
+Team Members:
+Name - MD SHAHID ANSARI 
+Roll - BCA223016
+Name - SAMIM REJA AHMAD 
+Roll - BCA223017
+Name - MUNSHI TOUHID HASAN
+Roll - BCA223012
+
+Here's some details "how to setup the platform".
+Step 1 - Modify database details in '.\assets\utils\constants.php'.
+Step 2 - Run the php server.
+Step 3 - ADD COURSES from Course page.
+Step 4 - ADD OUTCOMES from Outcome page.
+Step 5 - ADD QUESTIONS from Question page.
+Step 6 - finally, browse and add questions in report and download as pdf from Dashboard.
+
+For any further enhancements/modfications:
+Please contact us at: 
+MD SHAHID [ 80924 72401 ], 
+SHAMIM [ 90627 83732 ], 
+MUNSHI [ 8230902896 ].
+
+Thanku😊
+
+Make us happy by Endorsing / Recommending Us:
+MD SHAHID [ https://www.linkedin.com/in/md-shahid-ansari-au/ ], 
+SHAMIM [ https://www.linkedin.com/in/shamim-reja-a9717a330/ ], 
+MUNSHI [ https://www.linkedin.com/in/munshi-touhid-hasan-5b1260323/ ].
+
+Once Again, Thanku😊
